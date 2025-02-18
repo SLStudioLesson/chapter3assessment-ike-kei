@@ -6,6 +6,10 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+// 設問４
+// DataHandlerクラスをimport
+import com.recipeapp.datahandler.DataHandler;
+
 public class RecipeUI {
     private BufferedReader reader;
     private DataHandler dataHandler;
