@@ -1,8 +1,11 @@
 package com.recipeapp.datahandler;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.recipeapp.ui.model.Ingredient;
 import com.recipeapp.ui.model.Recipe;
 
 // 設問３
@@ -27,7 +30,23 @@ public class CSVDataHandler implements DataHandler {
 
     @Override
     public ArrayList<Recipe> readData() throws IOException {
-        return null;
+        ArrayList<Recipe> recipes = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] pairs = line.split(",",2);
+                ArrayList<Ingredient> ingredients = new ArrayList<>();
+                for (String pair : pairs) {
+                }
+                Ingredient ingredient = new Ingredient(pairs[1]);
+                ingredients.add(ingredient);
+                Recipe recipe = new Recipe(pairs[0], ingredients);
+                recipes.add(recipe);
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading file: 例外のメッセージ");
+        }
+        return recipes;
     }
 
     @Override
