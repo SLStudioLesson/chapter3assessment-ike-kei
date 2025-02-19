@@ -4,12 +4,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.List;
 
-import com.recipeapp.datahandler.CSVDataHandler;
 // 設問４
 // DataHandlerクラスをimport
 import com.recipeapp.datahandler.DataHandler;
+import com.recipeapp.ui.model.Ingredient;
 import com.recipeapp.ui.model.Recipe;
 
 public class RecipeUI {
@@ -40,8 +39,11 @@ public class RecipeUI {
                 switch (choice) {
                     case "1":
                         displayRecipes();
+                        // 確認用
+                        // dataHandler.readData();
                         break;
                     case "2":
+                        addNewRecipe();
                         break;
                     case "3":
                         break;
@@ -72,9 +74,41 @@ public class RecipeUI {
             System.out.println("-----------------------------------");
             for (Recipe recipe : recipes) {
                 System.out.println("Recipe Name: " + recipe.getName());
-                System.out.println("Main Ingredients: " + recipe.getIngredients());
+                System.out.print("Main Ingredients: ");
+                for (Ingredient ingredient : recipe.getIngredients()) {
+                    System.out.print(ingredient.getName());
+                }
+                System.out.println();
                 System.out.println("-----------------------------------");
             }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    // 設問6
+    private void addNewRecipe() {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        try {
+            System.out.println();
+            System.out.println("Adding a new recipe.");
+            System.out.print("Enter recipe name: ");
+            String recipeName = reader.readLine();
+            String ingredientInput = "";
+            ArrayList<Ingredient> ingredients = new ArrayList<>();
+            System.out.println("Enter ingredients (type 'done' when finished):");
+            while (true) {
+                System.out.print("Ingredient: ");
+                ingredientInput = reader.readLine();
+                if (ingredientInput.equals("done")) {
+                    break;
+                }
+                Ingredient ingredient = new Ingredient(ingredientInput);
+                ingredients.add(ingredient);
+            }
+            Recipe recipe = new Recipe(recipeName, ingredients);
+            dataHandler.writeData(recipe);
+            System.out.println("Recipe added successfully.");
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
